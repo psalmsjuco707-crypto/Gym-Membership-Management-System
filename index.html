@@ -1,0 +1,193 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Pro | Gym Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-dumbbell"></i>
+                <span>FitTrack Pro</span>
+            </div>
+            <nav>
+                <a href="#" class="nav-link active" data-page="dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="#" class="nav-link" data-page="members"><i class="fa-solid fa-users"></i> Members</a>
+                <a href="#" class="nav-link" data-page="add-member"><i class="fa-solid fa-user-plus"></i> Add Member</a>
+                <a href="#" class="nav-link" data-page="transactions"><i class="fa-solid fa-receipt"></i> Transactions</a>
+                <a href="#" class="nav-link" data-page="plans"><i class="fa-solid fa-id-card"></i> Plans</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>&copy; 2026 FitTrack</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="page-title">
+                    <h2 id="pageTitle">Dashboard</h2>
+                    <p id="pageSubtitle">Overview of gym activity and performance</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon" onclick="alert('Notifications coming soon')"><i class="fa-solid fa-bell"></i></button>
+                    <div class="profile">
+                        <div class="avatar">AD</div>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Dashboard -->
+                <section id="dashboard" class="page-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+                            <div class="stat-details"><h3 id="statTotal">0</h3><p>Total Members</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="fa-solid fa-user-check"></i></div>
+                            <div class="stat-details"><h3 id="statActive">0</h3><p>Active Members</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple"><i class="fa-solid fa-sack-dollar"></i></div>
+                            <div class="stat-details"><h3 id="statRevenue">₱0</h3><p>Monthly Revenue</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red"><i class="fa-solid fa-clock"></i></div>
+                            <div class="stat-details"><h3 id="statExpiring">0</h3><p>Expiring (7 Days)</p></div>
+                        </div>
+                    </div>
+                    <div class="charts-row">
+                        <div class="chart-box"><h3>Membership Growth (6 Months)</h3><canvas id="growthChart"></canvas></div>
+                        <div class="chart-box"><h3>Plan Distribution</h3><canvas id="planChart"></canvas></div>
+                    </div>
+                </section>
+
+                <!-- Members List -->
+                <section id="members" class="page-section">
+                    <div class="data-card">
+                        <div class="card-toolbar">
+                            <input type="text" id="searchBar" placeholder="Search by name or email...">
+                            <select id="statusFilter">
+                                <option value="all">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="Expired">Expired</option>
+                            </select>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Plan</th>
+                                        <th>Payment</th>
+                                        <th>Join Date</th>
+                                        <th>Expiry</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="membersTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add Member -->
+                <section id="add-member" class="page-section">
+                    <div class="data-card form-wrapper">
+                        <h3><i class="fa-solid fa-user-plus"></i> Register New Member</h3>
+                        <form id="addForm" class="modern-form">
+                            <div class="form-grid">
+                                <div class="input-group"><label>Full Name</label><input type="text" id="fName" placeholder="John Doe" required></div>
+                                <div class="input-group"><label>Email Address</label><input type="email" id="fEmail" placeholder="john@example.com" required></div>
+                                <div class="input-group"><label>Phone Number</label><input type="tel" id="fPhone" placeholder="0917-123-4567" required></div>
+                                <div class="input-group"><label>Membership Plan</label>
+                                    <select id="fPlan" onchange="updatePricePreview()">
+                                        <option value="Basic">Basic (₱1,000/mo)</option>
+                                        <option value="Premium">Premium (₱2,000/mo)</option>
+                                        <option value="VIP">VIP Elite (₱2,500/mo)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group"><label>Payment Method</label>
+                                    <select id="fPayment">
+                                        <option value="Cash">Cash</option>
+                                        <option value="GCash">GCash</option>
+                                        <option value="PayMaya">PayMaya</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                    </select>
+                                </div>
+                                <div class="input-group"><label>Start Date</label><input type="date" id="fStart" required></div>
+                                <div class="input-group"><label>End Date</label><input type="date" id="fEnd" required></div>
+                            </div>
+                            <div class="price-preview" id="pricePreview">Total Amount: <strong>₱1,000</strong></div>
+                            <div class="form-actions"><button type="submit" class="btn primary"><i class="fa-solid fa-save"></i> Save Member</button></div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Transactions -->
+                <section id="transactions" class="page-section">
+                    <div class="data-card">
+                        <div class="card-toolbar">
+                            <h3>Transaction History</h3>
+                            <input type="text" id="txnSearch" placeholder="Search transactions...">
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Txn ID</th>
+                                        <th>Member</th>
+                                        <th>Plan</th>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Plans -->
+                <section id="plans" class="page-section">
+                    <div class="plans-grid">
+                        <div class="plan-card">
+                            <h3>Basic</h3>
+                            <div class="price">₱1,000<span>/mo</span></div>
+                            <ul><li><i class="fa-solid fa-check"></i> Gym Floor Access</li><li><i class="fa-solid fa-check"></i> Locker Room</li><li><i class="fa-solid fa-check"></i> Free WiFi</li></ul>
+                        </div>
+                        <div class="plan-card featured">
+                            <div class="badge-pop">Popular</div>
+                            <h3>Premium</h3>
+                            <div class="price">₱2,000<span>/mo</span></div>
+                            <ul><li><i class="fa-solid fa-check"></i> All Basic Features</li><li><i class="fa-solid fa-check"></i> Group Classes</li><li><i class="fa-solid fa-check"></i> Sauna & Steam</li></ul>
+                        </div>
+                        <div class="plan-card">
+                            <h3>VIP Elite</h3>
+                            <div class="price">₱2,500<span>/mo</span></div>
+                            <ul><li><i class="fa-solid fa-check"></i> All Premium Features</li><li><i class="fa-solid fa-check"></i> Personal Trainer (2x/wk)</li><li><i class="fa-solid fa-check"></i> Nutrition Plan</li></ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
